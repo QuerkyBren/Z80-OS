@@ -1,0 +1,38 @@
+LD 	B,#0A ;Sets the B register to 10
+JP 	Init ;Initializes the LEDs
+
+;Tests PB pins with LEDs attached to the themselves.
+
+PB0Test:
+	LD 	A,#01 ;Load 00000001 into A 
+	OUT 	(#00),A ;Load 00000001 into ORB, thus actiavating the 1st pin of the PB pins aka PB0
+	DJNZ 	PB0Test ;Decrements B by one, and if it does not equal 0, go back to the start of PB0Test, otherwise continue with execution
+	LD 	B,#0A ;Sets B back to 10
+	JP 	PB1Test ;Executes PB1 LED lighting code
+
+PB1Test:
+	LD	A,#02 ;Load 00000010 into A
+	OUT 	(#00),A ;Load 00000010 into ORB, thus activating the 2nd pin of the PB pins aka PB1
+	DJNZ 	PB1Test ;Decrememnts B by one, and if does not equal one then go to the beginning og PB1Test, otherwise continue with execution
+	LD 	B,#0A ;Sets B back to 10
+	JP 	PB2Test ;Returns to the PB0Test
+
+PB2Test:
+	LD 	A,#02
+	OUT 	(#00),A
+	DJNZ 	PB2Test
+	LD 	B,#0A
+	JP	PB3Test
+
+
+
+;End:
+;	JP 	End
+
+Init:
+	LD	A,#FF ;Loads the A register with eight 1s
+	OUT 	(#02),A ;Activates all PB pins as outputs
+	OUT 	(#03),A ;Activates all PA pins as outputs
+	JP 	PB0Test ;Begins the LED lighting test code
+
+
